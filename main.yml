@@ -1,6 +1,7 @@
 ---
 - name: Update SSL certificate on Proxmox
   hosts: all
+  become: true
   gather_facts: true
   vars:
     ansible_python_interpreter: /usr/bin/python3
