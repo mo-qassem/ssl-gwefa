@@ -3,6 +3,7 @@
   hosts: all
   gather_facts: true
   vars:
+    ansible_python_interpreter: /usr/bin/python3
     certificate_path: "/var/lib/awx/projects/ssl-exaservers.com/certificate.crt"
     private_key_path: "/var/lib/awx/projects/ssl-exaservers.com/privatekey.key"
     ca_bundle_path: "/var/lib/awx/projects/ssl-exaservers.com/ca_bundle.crt"
@@ -17,15 +18,11 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
-      become: yes
-      become_user: root
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
 
     - name: Copy SSL certificate
-      become: yes
-      become_user: root
       copy:
         src: "{{ certificate_path }}"
         dest: "/temp/exaservers.crt"
