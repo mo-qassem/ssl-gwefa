@@ -1,0 +1,50 @@
+---
+- name: Update SSL certificate on Proxmox
+  hosts: all
+  gather_facts: no
+  vars:
+    certificate_path: "/var/lib/awx/projects/ssl-exaservers.com/certificate.crt"
+    private_key_path: "/var/lib/awx/projects/ssl-exaservers.com/privatekey.key"
+    ca_bundle_path: "/var/lib/awx/projects/ssl-exaservers.com/ca_bundle.crt"
+
+  tasks:
+    - name: Remove exisiting files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key
+        - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
+
+    - name: Copy SSL private key
+      copy:
+        src: "{{ private_key_path }}"
+        dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+
+    - name: Copy SSL certificate
+      copy:
+        src: "{{ certificate_path }}"
+        dest: "/temp/exaservers.crt"
+
+    - name: Copy SSL ca bundle
+      copy:
+        src: "{{ ca_bundle_path }}"
+        dest: "/temp/ca_bundle.crt"
+
+    - name: Copy certificate.crt content
+      slurp:
+        src: /temp/exaservers.crt
+      register: cert_contents
+
+    - name: Copy ca_bundle content
+      slurp:
+        src: /temp/ca_bundle.crt
+      register: bundle_contents
+
+    - name: Combine contents into pve-ssl file
+      template:
+        src: pve-ssl.j2
+        dest: /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
+      vars:
+        certificate_content: "{{ cert_contents['content'] | b64decode }}"
+        bundle_content: "{{ bundle_contents['content'] | b64decode }}"
