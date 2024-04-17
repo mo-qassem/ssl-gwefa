@@ -19,6 +19,7 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
+      become_user: root
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
