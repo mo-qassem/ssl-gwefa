@@ -20,6 +20,7 @@
 
     - name: Copy SSL private key
       become_user: root
+      become: yes
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
