@@ -6,6 +6,7 @@
     certificate_path: "/var/lib/awx/projects/ssl-exaservers.com/certificate.crt"
     private_key_path: "/var/lib/awx/projects/ssl-exaservers.com/privatekey.key"
     ca_bundle_path: "/var/lib/awx/projects/ssl-exaservers.com/ca_bundle.crt"
+    hostname: "{{ ansible_hostname }}"
 
   tasks:
     - name: Remove exisiting files
@@ -13,13 +14,13 @@
         path: "{{ item }}"
         state: absent
       with_items:
-        - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key
-        - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
+        - /etc/pve/nodes/{{ hostname }}/pve-ssl.key
+        - /etc/pve/nodes/{{ hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+        dest: "/etc/pve/nodes/{{ hostname }}/pve-ssl.key"
 
     - name: Copy SSL certificate
       copy:
@@ -44,7 +45,7 @@
     - name: Combine contents into pve-ssl file
       template:
         src: pve-ssl.j2
-        dest: /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
+        dest: /etc/pve/nodes/{{ hostname }}/pve-ssl.pem
       vars:
         certificate_content: "{{ cert_contents['content'] | b64decode }}"
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
