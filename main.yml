@@ -1,6 +1,7 @@
 ---
 - name: Update SSL certificate on Proxmox
   hosts: all
+  become: yes
   gather_facts: true
   vars:
     certificate_path: "/var/lib/awx/projects/ssl-exaservers.com/certificate.crt"
