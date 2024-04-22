@@ -1,6 +1,7 @@
 ---
 - name: Update SSL certificate on Proxmox
   hosts: all
+  become: yes
   gather_facts: true
   vars:
     certificate_path: "/var/lib/awx/projects/ssl-exaservers.com/certificate.crt"
@@ -17,8 +18,6 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
-      become_user: root
-      become: yes
       ansible.builtin.copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
