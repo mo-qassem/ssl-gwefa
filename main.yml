@@ -3,7 +3,6 @@
   hosts: all
   gather_facts: true
   vars:
-    ansible_python_interpreter: /usr/bin/python3
     certificate_path: "/var/lib/awx/projects/ssl-exaservers.com/certificate.crt"
     private_key_path: "/var/lib/awx/projects/ssl-exaservers.com/privatekey.key"
     ca_bundle_path: "/var/lib/awx/projects/ssl-exaservers.com/ca_bundle.crt"
