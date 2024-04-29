@@ -52,6 +52,8 @@
       register: bundle_contents
 
     - name: Combine contents into pve-ssl file
+      become: true
+      become_user: root
       template:
         src: pve-ssl.j2
         dest: /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
@@ -59,5 +61,7 @@
         certificate_content: "{{ cert_contents['content'] | b64decode }}"
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
 
-    - name: Restart httpd service
-      command: systemctl restart pveproxy
+    - name: Restart pveproxy service
+      service:
+        name: pveproxy
+        state: restarted
