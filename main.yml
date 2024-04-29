@@ -25,10 +25,11 @@
     - name: Copy SSL private key to remote srv
       become: true
       become_user: root
-      become_method: sudo
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+        owner: root
+        group: www-data
 
     - name: Copy SSL certificate
       copy:
