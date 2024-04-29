@@ -22,16 +22,11 @@
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
-        mode: "0644"
-        owner: root
-        group: www-data
-        mode: "0644"
 
     - name: Copy SSL certificate
       copy:
         src: "{{ certifcate_path }}"
         dest: "/temp/exaservers.crt"
-  
 
     - name: Copy SSL ca bundle
       copy:
