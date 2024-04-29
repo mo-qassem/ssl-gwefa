@@ -2,7 +2,7 @@
 - name: Update SSL certificate on Proxmox
   hosts: all
   become: true
-  become_user: root
+  become_user: exadmn
   gather_facts: true
   vars:
     ansible_python_interpreter: /usr/bin/python3
@@ -20,10 +20,11 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
+      become: true
+      become_user: root
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
-        remote_src: true
 
     - name: Copy SSL certificate
       copy:
