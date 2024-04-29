@@ -27,6 +27,7 @@
       copy:
         src: "/tmp/pve-ssl.key"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+        remote_src: yes
 
     - name: Copy SSL certificate
       copy:
