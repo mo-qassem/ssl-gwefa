@@ -3,6 +3,7 @@
   hosts: all
   become: true
   become_user: exadmn
+  become_method: sudo
   gather_facts: true
   vars:
     ansible_python_interpreter: /usr/bin/python3
@@ -20,8 +21,6 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
-      become: true
-      become_user: root
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
