@@ -20,10 +20,13 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
-    - name: Copy SSL private key
+    - name: Copy SSL private key to remote srv
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/nodes/{{ ansible_hostname }}"
+        dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+      become: true
+      become_user: exadmn
+      become_method: sudo
 
     - name: Copy SSL certificate
       copy:
