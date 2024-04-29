@@ -21,7 +21,12 @@
     - name: Copy SSL private key
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+        dest: "/tmp/pve-ssl.key"
+
+  - name: Copy SSL private key to /etc/pve/nodes/{{ ansible_hostname }} directory
+    copy:
+      src: "/tmp/pve-ssl.key"
+      dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
 
     - name: Copy SSL certificate
       copy:
