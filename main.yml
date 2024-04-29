@@ -13,6 +13,8 @@
 
   tasks:
     - name: Remove exisiting files
+      become: true
+      become_user: root
       file:
         path: "{{ item }}"
         state: absent
