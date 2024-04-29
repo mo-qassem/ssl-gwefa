@@ -23,7 +23,6 @@
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
         mode: "0644"
-        remote_src: yes
         owner: root
         group: www-data
         mode: "0644"
