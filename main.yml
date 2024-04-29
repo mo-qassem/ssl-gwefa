@@ -18,17 +18,18 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
-      ansible.builtin.copy:
+      copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
 
     - name: Copy SSL certificate
-      ansible.builtin.copy:
-        src: "{{ certificate_path }}"
+      copy:
+        src: "{{ certifcate_path }}"
         dest: "/temp/exaservers.crt"
+        mode: "0644"
 
     - name: Copy SSL ca bundle
-      ansible.builtin.copy:
+      copy:
         src: "{{ ca_bundle_path }}"
         dest: "/temp/ca_bundle.crt"
 
@@ -49,3 +50,6 @@
       vars:
         certificate_content: "{{ cert_contents['content'] | b64decode }}"
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
+
+    - name: Restart httpd service
+      command: systemctl restart pveproxy
