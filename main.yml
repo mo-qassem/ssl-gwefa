@@ -27,7 +27,7 @@
       become_user: root
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
+        dest: "/root/pve-ssl.key"
 
     - name: Copy SSL certificate
       copy:
