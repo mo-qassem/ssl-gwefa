@@ -28,8 +28,6 @@
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
-        owner: root
-        group: www-data
 
     - name: Copy SSL certificate
       copy:
