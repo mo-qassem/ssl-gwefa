@@ -26,7 +26,13 @@
       become: true
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/local/pve-ssl.key"
+        dest: "/root/pve-ssl.key"
+
+    - name: Copy SSL private key to /etc/pve/nodes/
+      copy:
+        src: "/root/pve-ssl.key"
+        dest: "/etc/pve/nodes/lnx-pve05/pve-ssl.key"
+        remote_src: true
 
     - name: Copy SSL certificate
       copy:
@@ -40,12 +46,12 @@
 
     - name: Copy certificate.crt content
       slurp:
-        src: /temp/exaservers.crt
+        src: /root/exaservers.crt
       register: cert_contents
 
     - name: Copy ca_bundle content
       slurp:
-        src: /temp/ca_bundle.crt
+        src: /root/ca_bundle.crt
       register: bundle_contents
 
     - name: Combine contents into pve-ssl file
