@@ -34,7 +34,7 @@
       become_user: root
       copy:
         src: "/root/pve-ssl.key"
-        dest: "/etc/pve/nodes/lnx-pve05/pve-ssl.key"
+        dest: "/etc/pve/local/pve-ssl.key"
         remote_src: true
 
     - name: Copy SSL certificate
