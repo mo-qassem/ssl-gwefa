@@ -28,8 +28,7 @@
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key"
-        mode: "0600"
-        unsafe_writes: yes
+        mode: preserve
 
     - name: Copy SSL certificate
       copy:
