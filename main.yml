@@ -23,40 +23,34 @@
         - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
 
     - name: Copy SSL private key
-      become: true
-      become_user: root
       copy:
         src: "{{ private_key_path }}"
-        dest: "/root/pve-ssl.key"
+        dest: "/tmp/pve-ssl.key"
 
     - name: Copy SSL certificate
-      become: true
       copy:
         src: "{{ certificate_path }}"
-        dest: "/root/exaservers.crt"
+        dest: "/tmp/exaservers.crt"
 
     - name: Copy SSL ca bundle
-      become: true
       copy:
         src: "{{ ca_bundle_path }}"
-        dest: "/root/ca_bundle.crt"
+        dest: "/tmp/ca_bundle.crt"
 
     - name: Copy certificate.crt content
       slurp:
-        src: /root/exaservers.crt
+        src: /tmp/exaservers.crt
       register: cert_contents
 
     - name: Copy ca_bundle content
       slurp:
-        src: /root/ca_bundle.crt
+        src: /tmp/ca_bundle.crt
       register: bundle_contents
 
     - name: Combine contents into pve-ssl file
-      become: true
-      become_user: root
       template:
         src: pve-ssl.j2
-        dest: /root/pve-ssl.pem
+        dest: /tmp/pve-ssl.pem
       vars:
         certificate_content: "{{ cert_contents['content'] | b64decode }}"
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
@@ -65,8 +59,8 @@
       command:
         cmd: "cp {{ item }} /etc/pve/nodes/{{ ansible_hostname }}/"
       loop:
-        - /root/pve-ssl.key
-        - /root/pve-ssl.pem
+        - /tmp/pve-ssl.key
+        - /tmp/pve-ssl.pem
 
     - name: Restart pveproxy service
       service:
