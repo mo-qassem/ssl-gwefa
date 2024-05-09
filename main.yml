@@ -65,6 +65,8 @@
         - /tmp/pve-ssl.pem
 
     - name: Restart pveproxy service
+      become: true
+      become_user: root
       service:
         name: pveproxy
         state: restarted
