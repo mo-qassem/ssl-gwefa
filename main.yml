@@ -30,11 +30,13 @@
         dest: "/root/pve-ssl.key"
 
     - name: Copy SSL certificate
+      become: true
       copy:
         src: "{{ certificate_path }}"
         dest: "/root/exaservers.crt"
 
     - name: Copy SSL ca bundle
+      become: true
       copy:
         src: "{{ ca_bundle_path }}"
         dest: "/root/ca_bundle.crt"
