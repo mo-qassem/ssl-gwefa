@@ -28,6 +28,7 @@
       copy:
         src: "{{ private_key_path }}"
         dest: "/etc/pve/local/pve-ssl.key"
+        follow: true
 
     - name: Copy SSL certificate
       copy:
