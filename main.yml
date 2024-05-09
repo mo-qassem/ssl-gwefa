@@ -56,6 +56,8 @@
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
 
     - name: sudo move files
+      become: true
+      become_user: root
       command:
         cmd: "cp {{ item }} /etc/pve/nodes/{{ ansible_hostname }}/"
       loop:
