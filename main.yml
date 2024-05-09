@@ -27,8 +27,7 @@
       become_user: root
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/local/pve-ssl.key"
-        follow: true
+        dest: "/root/pve-ssl.key"
 
     - name: Copy SSL certificate
       copy:
@@ -55,10 +54,17 @@
       become_user: root
       template:
         src: pve-ssl.j2
-        dest: /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
+        dest: /root/pve-ssl.pem
       vars:
         certificate_content: "{{ cert_contents['content'] | b64decode }}"
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
+
+    - name: sudo move files
+      command:
+        cmd: "cp {{ item }} /etc/pve/nodes/{{ ansible_hostname }}/"
+      loop:
+        - /root/pve-ssl.key
+        - /root/pve-ssl.pem
 
     - name: Restart pveproxy service
       service:
