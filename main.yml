@@ -19,13 +19,13 @@
         path: "{{ item }}"
         state: absent
       with_items:
-        - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.key
-        - /etc/pve/nodes/{{ ansible_hostname }}/pve-ssl.pem
+        - /etc/pve/local/pveproxy-ssl.key
+        - /etc/pve/local/pveproxy-ssl.pem
 
     - name: Copy SSL private key
       copy:
         src: "{{ private_key_path }}"
-        dest: "/tmp/pve-ssl.key"
+        dest: "/etc/pve/local/pveproxy-ssl.key"
 
     - name: Copy SSL certificate
       copy:
@@ -49,8 +49,8 @@
 
     - name: Combine contents into pve-ssl file
       template:
-        src: pve-ssl.j2
-        dest: /tmp/pve-ssl.pem
+        src: pveproxy-ssl.j2
+        dest: /tmp/pveproxy-ssl.pem
       vars:
         certificate_content: "{{ cert_contents['content'] | b64decode }}"
         bundle_content: "{{ bundle_contents['content'] | b64decode }}"
@@ -61,8 +61,8 @@
       command:
         cmd: "cp {{ item }} /etc/pve/nodes/{{ ansible_hostname }}/"
       loop:
-        - /tmp/pve-ssl.key
-        - /tmp/pve-ssl.pem
+        - /tmp/pveproxy-ssl.key
+        - /tmp/pveproxy-ssl.pem
 
     - name: Restart pveproxy service
       become: true
