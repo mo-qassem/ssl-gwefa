@@ -25,7 +25,7 @@
     - name: Copy SSL private key
       copy:
         src: "{{ private_key_path }}"
-        dest: "/etc/pve/local/pveproxy-ssl.key"
+        dest: "/tmp/pveproxy-ssl.key"
 
     - name: Copy SSL certificate
       copy:
@@ -59,7 +59,7 @@
       become: true
       become_user: root
       command:
-        cmd: "cp {{ item }} /etc/pve/nodes/{{ ansible_hostname }}/"
+        cmd: "cp {{ item }} /etc/pve/local/"
       loop:
         - /tmp/pveproxy-ssl.key
         - /tmp/pveproxy-ssl.pem
