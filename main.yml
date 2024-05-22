@@ -70,3 +70,8 @@
       service:
         name: pveproxy
         state: restarted
+
+    - name: Update the 'MOTD' file
+      copy:
+        src: other/motd.txt
+        dest: /etc/motd
