@@ -73,5 +73,5 @@
 
     - name: Update the 'MOTD' file
       copy:
-        src: other/motd.txt
+        src: motd.txt
         dest: /etc/motd
